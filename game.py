@@ -18,7 +18,7 @@ tree = pygame.image.load('tree.png')
 spriteUp    = pygame.image.load('man/top1.png')
 spriteDown  = pygame.image.load('man/bottom1.png')
 spriteLeft  = pygame.image.load('man/left1.png')
-spriteRight = pygame.image.load('man/right1.png')
+spriteRight = pygame.transform.flip(spriteLeft, True, False)
     
 swordUp    = pygame.image.load('man/swordtop1.png')
 swordDown  = pygame.image.load('man/swordbottom1.png')
