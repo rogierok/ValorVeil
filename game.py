@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 screen = pygame.display.set_mode((800,600))
@@ -12,8 +13,13 @@ inventory = []
 rockhealth = 6
 rock = pygame.image.load('rock.png')
 
+playerhealth = 20
+
 treehealth = 6
 tree = pygame.image.load('tree.png')
+
+enemyhealth = 12
+enemy = pygame.image.load('enemy.png')
 
 spriteUp    = pygame.image.load('man/top1.png')
 spriteDown  = pygame.image.load('man/bottom1.png')
@@ -34,6 +40,9 @@ hitsound = pygame.mixer.Sound('audio/punch-140236.mp3')
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+#enemy_pos = pygame.Vector2(22000 / 120)
+enemy_pos = pygame.Vector2(player_pos.y +250 / player_pos.x -200)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -46,6 +55,8 @@ while running:
     character = spriteDown
 
     sword = swordDown
+
+    screen.blit(enemy, (enemy_pos))
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
@@ -94,7 +105,14 @@ while running:
                 rock.set_alpha(255)
                 inventory.append("stone")
                 print(inventory)
-        
+
+        if enemy.get_rect(topleft=(enemy_pos)).collidepoint(mousePos) and enemyhealth > 0 and abs(enemy_pos.y - player_pos.y) <= 200 and abs(enemy_pos.x - player_pos.x) <= 200 and "sword" in inventory:
+            enemyhealth = enemyhealth - 1
+            hitsound.play()
+            print(enemyhealth)
+            if enemyhealth == 0:
+                enemy = pygame.image.load('enemydead.png')
+
     screen.blit(rock, (440, 120))
     screen.blit(tree, (160, 320))
     screen.blit(character, (player_pos))
